@@ -1,15 +1,10 @@
-import React from 'react'
-import "react-chat-elements/dist/main.css"
-import { MessageBox } from 'react-chat-elements'
+import React from "react";
+import "./message.css"
 
-const Message = ({ m }: { m: string }) => {
-    return (
-        <MessageBox
-            position='right'
-            type='text'
-            text={m}
-        />
-    )
-}
+const Message = ({ message }: { message: string }) => {
+  return <div className="display-linebreak">{message}</div>;
+};
 
-export default Message
+export default Message;
+
+

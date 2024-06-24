@@ -48,22 +48,31 @@ diglycerides,,,,,\n\
 phosphatidylethanolamine class molecules (only one identified so far),,,,,\n\
 glycerolipids,,,,,\n\
 sphingolipids,,,,,\n\
-carbohydrates,,,,,\n`
+carbohydrates,,,,,\n`;
 
 let client: Client;
-export async function Init() {
-    client = await Client.connect("uiynyny/qwen1.5-32");
-    return client
+async function Init() {
+  client = await Client.connect("uiynyny/qwen1.5-32");
 }
 
-export async function POST(msg: string) {
-    const result = await client.predict("/chat", {
-        message: msg,
-        system_message: prompt,
-        max_tokens: 512,
-        temperature: 0.7,
-        top_p: 0.1,
-    });
 
-    console.log(result.data);
+async function predict(question: string) {
+  await Init();
+  const result = await client.predict("/chat", {
+    message: question,
+    system_message: prompt,
+    max_tokens: 512,
+    temperature: 0.7,
+    top_p: 0.95,
+  });
+  return result;
+}
+
+
+export async function POST(req: Request) {
+  const { question } = await req.json();
+  let r = predict(question);
+  return new Response(JSON.stringify(r), {
+    headers: { "Content-Type": "text/plain" },
+  });
 }

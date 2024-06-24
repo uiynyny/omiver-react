@@ -24,6 +24,13 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  backdrop-filter: blur(10px) saturate(180%);
+  border-radius: 12px;
 }
 
 @layer utilities {

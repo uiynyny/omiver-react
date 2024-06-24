@@ -1,12 +1,10 @@
-"use client"
-import React, { useState } from 'react'
+import React from 'react'
 import Message from './message'
 
 const Messages = () => {
-    const [messages, setMessages] = useState([])
     return (
         <div>
-            <Message m={"message example"} />
+            <Message message={"message example"} />
         </div>
     )
 }
