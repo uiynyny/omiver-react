@@ -12,8 +12,7 @@ const ChatPanel = () => {
   async function sendInput() {
     setMessagelist((prev) => prev.concat(text));
     const res = await axios.post("/chat", { question: text });
-    let r = res.data.data[0];
-    addResponse(r);
+    addResponse(res.data.data[0]);
   }
   function addResponse(res: string) {
     console.log("adding response", res);
