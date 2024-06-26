@@ -16,7 +16,7 @@ type profile = {
 }
 const ChatPanel = () => {
   const [text, setText] = React.useState<string>("");
-  const [profile, setProfile] = React.useState<profile>({ sex: "Male", race: "White", goal: "Maintaining Weight" });
+  const [profile, setProfile] = React.useState<profile>({ name: "", age: Number.NaN, height: Number.NaN, weight: Number.NaN, sex: "Male", race: "White", goal: "Maintaining Weight" });
   const [err, setErr] = React.useState<string>("");
   const [messagelist, setMessagelist] = React.useState<{ type: string, value: string }[]>([]);
 
