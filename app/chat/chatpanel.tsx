@@ -225,7 +225,7 @@ const ChatPanel = () => {
           <div className="grid grid-rows-4 grid-flow-col metab m-5">
             {Object.keys(meta).map((key) => {
               return (
-                <div>
+                <div key={key}>
                   <div className="col-25">
                     <p className="text-xl">{key} (uM) </p>
                   </div>
