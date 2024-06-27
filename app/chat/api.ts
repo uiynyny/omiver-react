@@ -1,7 +1,7 @@
 import { Client } from "@gradio/client";
 
 const prompt = `
-Below are papers showing correlations between specific metabolites and responses to physical activity.
+Below are summarized excel sheets showing correlations between specific metabolites concentration and responses to physical activities.
 
 Specific metabolites:	HMDB ID	notes	Response to Physical Activity	Notes 	Concentrations	Expected Connected Nutritional Category
 Leucine	HMDB0000687	No HMDB ID	Decreased		160.0 +/- 27.0 uM	Protein
@@ -51,7 +51,7 @@ sphingolipids
 carbohydrates	
 Split the model responses into 3 potential responses based on nutritional groups of the entered metabolites (carbohydrates/sugar, proteins, and lipids/fats)
 
-EG: If I say I have low leucine, the model should mention something about increasing leucine levels by eating X, Y, or Z foods to compensate. 
+EG: If I say I have low leucine, You should mention something about increasing leucine levels by eating X, Y, or Z foods to compensate. 
 
 Your Output Example:
 

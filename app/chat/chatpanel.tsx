@@ -4,64 +4,108 @@ import axios from "axios";
 import Message from "./message";
 
 import "./chatpanel.css";
+import { log } from "console";
 
 type profile = {
-  name: string
-  age: number
-  height: number
-  weight: number
-  sex: string
-  race: string
-  goal: string
-}
+  name: string;
+  age: number;
+  height: number;
+  weight: number;
+  sex: string;
+  race: string;
+  goal: string;
+};
+
+type Meta = {
+  Leucine: number;
+  Lsoleucine: number;
+  Asparagine: number;
+  Methionine: number;
+  Lysine: number;
+  Glutamine: number;
+  Valine: number;
+  Glucose: number;
+};
 const ChatPanel = () => {
   const [text, setText] = React.useState<string>("");
-  const [profile, setProfile] = React.useState<profile>({ name: "", age: Number.NaN, height: Number.NaN, weight: Number.NaN, sex: "Male", race: "White", goal: "Maintaining Weight" });
+  const [meta, setMeta] = React.useState<Meta>({
+    Leucine: Number.NaN,
+    Lsoleucine: Number.NaN,
+    Asparagine: Number.NaN,
+    Methionine: Number.NaN,
+    Lysine: Number.NaN,
+    Glutamine: Number.NaN,
+    Valine: Number.NaN,
+    Glucose: Number.NaN,
+  });
+  const [profile, setProfile] = React.useState<profile>({
+    name: "",
+    age: Number.NaN,
+    height: Number.NaN,
+    weight: Number.NaN,
+    sex: "Male",
+    race: "White",
+    goal: "Maintaining Weight",
+  });
   const [err, setErr] = React.useState<string>("");
-  const [messagelist, setMessagelist] = React.useState<{ type: string, value: string }[]>([]);
+  const [messagelist, setMessagelist] = React.useState<
+    { type: string; value: string }[]
+  >([]);
 
-  function composeIntro(profile: profile) {
-    return `I am ${profile?.name}, ${profile?.sex}, height ${profile?.height}m, weight ${profile.weight}kg, race ${profile?.race}, My goals is ${profile?.goal}.`
+  function composeIntro(profile: profile, meta: Meta) {
+    let detail_result = "My metabolic level: \n";
+    for (const [k, v] of Object.entries(meta)) {
+      if (!Number.isNaN(v)) {
+        detail_result += `${k}: ${v}uM, `;
+      }
+    }
+    return (
+      `I am ${profile?.name}, ${profile?.sex}, height ${profile?.height}m, weight ${profile.weight}kg, race ${profile?.race}, My goals is ${profile?.goal}.\n` +
+      detail_result
+    );
   }
 
   function validateProfile() {
-    console.log(profile)
+    console.log(profile);
     if (!profile?.name) {
-      return "invalid name"
+      return "invalid name";
     }
     if (!profile?.age) {
-      return "invalid age"
+      return "invalid age";
     }
     if (!profile?.goal) {
-
-      return "invalid goal"
+      return "invalid goal";
     }
     if (!profile?.height) {
-      return "invalid height"
+      return "invalid height";
     }
     if (!profile?.race) {
-      return "invalid race"
+      return "invalid race";
     }
     if (!profile?.sex) {
-      return "invalid sex"
+      return "invalid sex";
     }
     if (!profile?.weight) {
-      return "invalid weight"
+      return "invalid weight";
     }
-    return null
+    return null;
   }
 
   async function sendInput() {
-    let err = validateProfile()
+    console.log(meta);
+
+    let err = validateProfile();
     if (err) {
-      setErr(err)
-      return
+      setErr(err);
+      return;
     }
-    setErr("")
-    let intro = composeIntro(profile)
-    setMessagelist((prev) => prev.concat({ type: "user", value: intro + text }));
+    setErr("");
+    let intro = composeIntro(profile, meta);
+    setMessagelist((prev) =>
+      prev.concat({ type: "user", value: intro + text })
+    );
     const res = await axios.post("/chat", { question: intro });
-    setText('')
+    setText("");
     addResponse(res.data.data[0]);
   }
   function addResponse(res: string) {
@@ -77,64 +121,86 @@ const ChatPanel = () => {
       <div className="bottom flex p-5">
         <div className="flex flex-col">
           {err ? <span style={{ color: "#f00" }}>{err}</span> : <></>}
-          <div className="columns-2">
+          <div className="columns-2 m-5">
             <div>
-              <div className="col-25"><p className="text-xl">name </p></div>
+              <div className="col-25">
+                <p className="text-xl">Name </p>
+              </div>
               <input
                 className="col-75"
                 type="text"
                 id="name"
                 name="Name"
-                onChange={e => setProfile(prev => { return { ...prev, name: e.target.value } })}
+                onChange={(e) =>
+                  setProfile((prev) => {
+                    return { ...prev, name: e.target.value };
+                  })
+                }
               />
             </div>
-            <div className="col-25"><p className="text-xl">age </p></div>
+            <div className="col-25">
+              <p className="text-xl">Age </p>
+            </div>
             <input
               className="col-75"
               type="number"
               min={0}
               id="age"
               name="Age"
-              onChange={e => setProfile({ ...profile, age: parseInt(e.target.value) })}
+              onChange={(e) =>
+                setProfile({ ...profile, age: parseInt(e.target.value) })
+              }
             />
-            <div className="col-25"><p className="text-xl">height (m) </p></div>
+            <div className="col-25">
+              <p className="text-xl">Height (m) </p>
+            </div>
             <input
               className="col-75"
               type="text"
               pattern="^\d*(\.\d{0,2})?$"
               id="height"
               name="Height"
-              onChange={e => setProfile({ ...profile, height: parseFloat(e.target.value) })}
+              onChange={(e) =>
+                setProfile({ ...profile, height: parseFloat(e.target.value) })
+              }
             />
-            <div className="col-25"><p className="text-xl">weight (kg)</p></div>
+            <div className="col-25">
+              <p className="text-xl">Weight (kg)</p>
+            </div>
             <input
               className="col-75"
               type="number"
               id="weight"
               name="Weight"
-              onChange={e => setProfile({ ...profile, weight: parseInt(e.target.value) })}
+              onChange={(e) =>
+                setProfile({ ...profile, weight: parseInt(e.target.value) })
+              }
             />
           </div>
-          <div className="flex flex-row">
-            <div className="col-25"><p className="text-xl">Sex</p></div>
+          <div className="flex flex-row m-5">
+            <div className="col-25">
+              <p className="text-xl">Sex</p>
+            </div>
             <select
               style={{ color: "black" }}
               id="sex"
               name="Sex"
               defaultValue={"Male"}
-              onChange={e => setProfile({ ...profile, sex: e.target.value })}
+              onChange={(e) => setProfile({ ...profile, sex: e.target.value })}
             >
               <option>Male</option>
               <option>Female</option>
               <option>Other</option>
             </select>
-            <div className="col-25"><p className="text-xl">Race</p></div>
+            <div className="col-25">
+              <p className="text-xl">Race</p>
+            </div>
             <select
               style={{ color: "black" }}
               id="race"
               name="race"
               defaultValue={"White"}
-              onChange={e => setProfile({ ...profile, race: e.target.value })}
+              onChange={(e) => setProfile({ ...profile, race: e.target.value })}
             >
               <option>White</option>
               <option>African American</option>
@@ -149,13 +215,35 @@ const ChatPanel = () => {
               id="goal"
               name="Goal"
               defaultValue={"Maintaining Weight"}
-              onChange={e => setProfile({ ...profile, goal: e.target.value })}
+              onChange={(e) => setProfile({ ...profile, goal: e.target.value })}
             >
               <option>Bulking</option>
               <option>Cutting</option>
               <option>Maintaining Weight</option>
             </select>
           </div>
+          <div className="grid grid-rows-4 grid-flow-col metab m-5">
+            {Object.keys(meta).map((key) => {
+              return (
+                <div>
+                  <div className="col-25">
+                    <p className="text-xl">{key} (uM) </p>
+                  </div>
+                  <input
+                    className="col-75"
+                    type="number"
+                    id={key}
+                    name={key}
+                    placeholder="Optional"
+                    onChange={(e) =>
+                      setMeta({ ...meta, [key]: parseFloat(e.target.value) })
+                    }
+                  />
+                </div>
+              );
+            })}
+          </div>
+
           {/* <input
             className="w-full h-40"
             type="text"
