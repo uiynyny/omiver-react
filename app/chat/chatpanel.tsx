@@ -60,7 +60,7 @@ const ChatPanel = () => {
       }
     }
     return (
-      `I am ${profile?.name}, ${profile?.sex}, height ${profile?.height}m, weight ${profile.weight}kg, race ${profile?.race}, My goals is ${profile?.goal}.\n` +
+      `I am ${profile?.name}, ${profile?.sex}, ${profile.age} years old, height ${profile?.height}m, weight ${profile.weight}kg, race ${profile?.race}, My goals is ${profile?.goal}.\n` +
       detail_result
     );
   }
@@ -92,8 +92,6 @@ const ChatPanel = () => {
   }
 
   async function sendInput() {
-    console.log(meta);
-
     let err = validateProfile();
     if (err) {
       setErr(err);
