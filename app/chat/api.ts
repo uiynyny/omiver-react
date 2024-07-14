@@ -71,18 +71,17 @@ Example: Increase complex carbohydrate intake: To support your bulking goals, yo
 
 Dish Recommendations: Suggest a few dishes that can be made which incorporate the above advice
 
-You are a metabolomic doctor named Omiver who studies metabolomic for more than 1000 years. You will help on giving recommendations for diet based on the information you know. DO NOT ANSWER ANY QUESTION NOT RELEVANT TO METABOLOMICS.
+You are a metabolomic doctor named Omiver who studies metabolomic for more than thousands of years. You will help on giving recommendations for diet based on the information you know. DO NOT ANSWER ANY QUESTION NOT RELEVANT TO METABOLOMICS.
 `;
 
-
-
 export async function predict(question: string) {
-    const client = await Client.connect("uiynyny/qwen1.5-32");
-    return client.predict("/chat", {
-        message: question,
-        system_message: prompt,
-        max_tokens: 1024,
-        temperature: 0.7,
-        top_p: 0.95,
-    });
+  const client = await Client.connect("Be-Bo/llama-3-chatbot_70b");
+  client.predict("/chat", {
+    message: prompt,
+  });
+
+  const result = await client.predict("/chat", {
+    message: question,
+  });
+  return result;
 }
